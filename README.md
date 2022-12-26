@@ -1,4 +1,4 @@
-WEB API FOR VEHICLE FLEET MANAGEMENT 
+FRONTEND FOR VEHICLE FLEET MANAGEMENT 
 ----------------------------------------------------------------
 The goal of this project is the creation of an application for monitoring the operation of the fleet of a certain company
 
