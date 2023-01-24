@@ -1,50 +1,43 @@
-import { Box, Button,  Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
+import DirectionsCarFilledIcon from "@mui/icons-material/DirectionsCarFilled";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineCharts";
 import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Constants from "../../utilities/Constants";
 
 const Dashboard = () => {
   const apiGetVehiclesEndPoint = Constants.API_URL_GET_ALL_VEHICLES;
-  const apiGetDriversEndPoint = Constants.API_URL_GET_ALL_DRIVERS;
-  const apiGetOrdersEndPoint = Constants.API_URL_GET_ALL_ORDERS;
+  const apiGetBrandsEndPoint = Constants.API_URL_GET_ALL_BRANDS;
+  const apiGetModelsEndPoint = Constants.API_URL_GET_ALL_MODELS;
+  //get brands
 
-  const [drivers, setDrivers] = useState([]);
-  //get drivers
+  //get Vehicles
+  const [brands, setBrands] = useState([]);
   useEffect(() => {
-    const getDrivers = async () => {
-      const { data: res } = await axios.get(
-        apiGetDriversEndPoint
-      );
-      /*  console.log(res.length) */
-      setDrivers(res);
+    const getBrands = async () => {
+      const { data: res } = await axios.get(apiGetBrandsEndPoint);
+      /* console.log(res.length) */
+      setBrands(res);
     };
-    getDrivers();
-  }, [apiGetDriversEndPoint]);
+    getBrands();
+  }, [apiGetBrandsEndPoint]);
 
-    //get orders
-    const [orders, setOrders] = useState([]);
-    useEffect(() => {
-      const getOrders = async () => {
-        const { data: res } = await axios.get(
-          apiGetOrdersEndPoint
-        );
-        /*  console.log(res.length) */
-        setOrders(res);
-      };
-      getOrders();
-    }, [apiGetOrdersEndPoint]);
+  //get models
+  const [models, setModels] = useState([]);
+
+  useEffect(() => {
+    const getModels = async () => {
+      const { data: res } = await axios.get(apiGetModelsEndPoint);
+      setModels(res);
+    };
+    getModels();
+  }, [apiGetModelsEndPoint]);
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -52,23 +45,36 @@ const Dashboard = () => {
   const [vehicles, setVehicles] = useState([]);
   useEffect(() => {
     const getVehicles = async () => {
-      const { data: res } = await axios.get(
-        apiGetVehiclesEndPoint
-      );
+      const { data: res } = await axios.get(apiGetVehiclesEndPoint);
       /* console.log(res.length) */
       setVehicles(res);
     };
     getVehicles();
   }, [apiGetVehiclesEndPoint]);
-
-
+  //get VehiclesByModel
+  const [vehiclesByModel, setVehiclesByModel] = useState([]);
+  const [brandId, setBrandId] = useState("");
+  const handleBrand = (event) => {
+    const getBrandid = event.target.value;
+    setBrandId(getBrandid);
+  };
+  useEffect(() => {
+    const getVehiclesByModel = async () => {
+      const { data: res } = await axios.get(
+        `https://localhost:7146/Vehicle/${brandId}/vehicle`
+      );
+      /* console.log(res.length) */
+      setVehiclesByModel(res);
+    };
+    getVehiclesByModel();
+  }, [brandId]);
 
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
- 
+
         <Box>
           <Button
             sx={{
@@ -81,12 +87,9 @@ const Dashboard = () => {
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
-
           </Button>
-
         </Box>
       </Box>
-
 
       {/* GRID & CHARTS */}
       <Box
@@ -106,7 +109,6 @@ const Dashboard = () => {
           <StatBox
             title="12,361"
             subtitle="Emails Sent"
-
             increase="+14%"
             icon={
               <EmailIcon
@@ -123,53 +125,18 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="Orders"
-            subtitle={orders.map((order) => (
-              <div key={orders.id} className="hideEl">
-                <p>{orders.length}</p>
-              </div>  ))}
-            /* subtitle="Sales Obtained" */
- 
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
             title="Number of Vehicles"
             subtitle={vehicles.map((vehicle) => (
               <div key={vehicle.id} className="hideEl">
-                <p >{vehicles.length}</p>
+                <p>{vehicles.length + 1}</p>
               </div>
             ))}
- 
             icon={
               <DirectionsCarFilledIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
-
-
-          <Box
-            gridColumn="span 3"
-            backgroundColor={colors.primary[400]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          ></Box>
-
-
-
         </Box>
         <Box
           gridColumn="span 3"
@@ -178,30 +145,42 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-
-
           <StatBox
-            title="Employeed Drivers"
-            subtitle={drivers.map((driver) => (
-              <div key={driver.id} className="hideEl">
-                <p>{drivers.length}</p>
+            title="Number of Brands"
+            subtitle={brands.map((brand) => (
+              <div key={brand.id} className="hideEl">
+                <p>{brands.length}</p>
               </div>
             ))}
-
-
             icon={
-              <PersonAddIcon
+              <DirectionsCarFilledIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
           />
-
         </Box>
-
+        <Box
+          gridColumn="span 3"
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <StatBox
+            title="Number of Models"
+            subtitle={models.map((model) => (
+              <div key={model.id} className="hideEl">
+                <p>{models.length}</p>
+              </div>
+            ))}
+            icon={
+              <DirectionsCarFilledIcon
+                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+              />
+            }
+          />
+        </Box>
         {/* ROW 2 */}
-
-
-         
         <Box
           gridColumn="span 4"
           gridRow="span 2"
@@ -217,13 +196,26 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Drivers contact phone
+              Vehicle By Brand -  {brandId}
+              <select
+                name="brand"
+                className="form-control"
+                /* handleBrand */ onChange={(e) => handleBrand(e)}
+              >  <option>
+            --Select Brand--
+            </option>
+                {brands.map((getBrand) => (
+                  <option key={getBrand.id} value={getBrand.id}>
+                    {getBrand.name}
+                  </option>
+                ))}
+              </select>
             </Typography>
           </Box>
 
-          {drivers.map((driver) => (
+          {vehiclesByModel.map((vehicleByModel) => (
             <Box
-              key={driver.id}
+              key={vehicleByModel.id}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -236,87 +228,22 @@ const Dashboard = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {driver.firstName}
+                  {vehicleByModel.enginPower}[kW]
                 </Typography>
-                <Typography color={colors.grey[100]}>
-                  {driver.lastName}
+
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {vehicleByModel.registration}
                 </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{driver.mobilePhone}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                Licence: {driver.licenceNumber}
               </Box>
             </Box>
           ))}
         </Box>
 
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box>
-        </Box>
-
         {/* DIJAGRAM */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Salary per driver
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
-
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-          Revenues$
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <LineChart isDashboard={true} />
-          </Box>
-        </Box>
-
 
         <Box
           gridColumn="span 4"

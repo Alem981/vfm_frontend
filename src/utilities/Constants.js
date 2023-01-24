@@ -1,4 +1,4 @@
-const API_BASE_URL_DEVELOPMENT = "https://localhost:7146/api";
+const API_BASE_URL_DEVELOPMENT = "https://localhost:7146";
 const API_BASE_PRODUCTION = "";
 
 const ENDPOINTS_DRIVERS = {
@@ -9,16 +9,16 @@ const ENDPOINTS_ORDERS = {
 };
 
 const ENDPOINTS_VEHICLES = {
-  GET_ALL_VEHICLES: "vehicles",
-  DELETE_VEHICLE: "vehicles",
+  GET_ALL_VEHICLES: "Vehicle",
+  DELETE_VEHICLE: "",
   ADD_VEHICLE: "",
   UPDATE_VEHICLE: "",
 };
 const ENDPOINTS_BRANDS = {
-  GET_ALL_BRANDS: "VehicleBrands",
+  GET_ALL_BRANDS: "Brand",
 };
 const ENDPOINTS_MODELS = {
-  GET_ALL_MODELS: "VehicleModels",
+  GET_ALL_MODELS: "Model",
 };
 const development = {
   API_URL_GET_ALL_DRIVERS: `${API_BASE_URL_DEVELOPMENT}/${ENDPOINTS_DRIVERS.GET_ALL_DRIVERS}`,
@@ -32,7 +32,7 @@ const development = {
   API_URL_GET_ALL_MODELS: `${API_BASE_URL_DEVELOPMENT}/${ENDPOINTS_MODELS.GET_ALL_MODELS}`,
 };
 const production = {
-  API_URL_GET_ALL_VEHICLES: ` `,
+  API_URL_GET_ALL_VEHICLES: ``,
 };
 const Constants =
   process.env.NODE_ENV === "development" ? development : production;

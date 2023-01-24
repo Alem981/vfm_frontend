@@ -5,11 +5,11 @@ import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import Drivers from "./scenes/Drivers";
+import Brands from "./scenes/Brands";
+import Models from "./scenes/Models";
 import Vehicles from "./scenes/Vehicles";
-import Orders from "./scenes/Orders";
-import AddVehicleForm from "./scenes/forms/addVehicle";
-
+ 
+ 
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
@@ -24,11 +24,10 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/drivers" element={<Drivers />} />
               <Route path="/vehicles" element={<Vehicles />} />
-              <Route path="/orders" element={<Orders />} /> 
-              <Route path="/AddVehicleForm" element={<AddVehicleForm />} />
-             
+              <Route path="/brands" element={<Brands />} />
+              <Route path="/models" element={<Models />} /> 
+              
                
             </Routes>
           </main>

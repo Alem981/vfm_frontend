@@ -5,13 +5,11 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ContactMailIcon from '@mui/icons-material/ContactMail';
-
-
+import GarageIcon from '@mui/icons-material/Garage';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -128,27 +126,28 @@ const Sidebar = () => {
             >
               Data
             </Typography>
-            <Item
-              title="Manage drivers"
-              to="/drivers"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />  <Item
-              title="Manage Vehicles"
+           <Item
+              title="Vehicle List"
               to="/vehicles"
               icon={<DirectionsCarFilledIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
-
+<Item
+              title="Brands"
+              to="/brands"
+            
+              icon={<DriveEtaIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />  
 
 
             <Item
-              title="Work Order management"
-              to="/orders"
-              icon={<PeopleOutlinedIcon />}
+              title="Models"
+              to="/models"
+              icon={<GarageIcon />}
               selected={selected}
               setSelected={setSelected}
             />

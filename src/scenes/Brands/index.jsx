@@ -3,17 +3,17 @@ import axios from "axios";
 import Constants from "../../utilities/Constants";
 import { useTheme } from "@material-ui/core";
 import { tokens } from "../../theme";
-export default function Vehicles() {
-  const [vehicles, setVehicles] = useState([]);
-  const apiGetVehiclesEndPoint = Constants.API_URL_GET_ALL_VEHICLES;
+export default function Brands() {
+  const [brands, setBrands] = useState([]);
+  const apiGetBrandsEndPoint = Constants.API_URL_GET_ALL_BRANDS;
 
   useEffect(() => {
-    const getVehicles = async () => {
-      const { data: res } = await axios.get(apiGetVehiclesEndPoint);
-      setVehicles(res);
+    const getBrands = async () => {
+      const { data: res } = await axios.get(apiGetBrandsEndPoint);
+      setBrands(res);
     };
-    getVehicles();
-  }, [apiGetVehiclesEndPoint]);
+    getBrands();
+  }, [apiGetBrandsEndPoint]);
   //Delete Vehicle from db(by id)
 
   const theme = useTheme();
@@ -27,31 +27,23 @@ export default function Vehicles() {
             style={{ color: colors.primary[500] }}
           >
             <h2>
-              <b>Vehicles Details</b>
+              <b>Brands Details</b>
             </h2>
           </div>
           <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred"></div>
           <table className="table table-striped table-hover table-bordered">
             <thead>
               <tr>
-                <th>Vehicle Id</th>
-                <th>Vehicle Registration</th>
-                <th>Seats Number</th>
-                <th>Vehicle Weight [t]</th>
-                <th>Engine Power [kW]</th>
-                <th>Model Id</th>
-                <th>Edit</th>
+                <th>Brand Id</th>
+                <th>Brand Name</th>
               </tr>
             </thead>
             <tbody>
-              {vehicles.map((vehicle) => (
-                <tr key={vehicle.id}>
-                  <td>{vehicle.id}</td>
-                  <td>{vehicle.registration}</td>
-                  <td>{vehicle.seats}</td>
-                  <td>{vehicle.vehicleWeight}</td>
-                  <td>{vehicle.enginPower}</td>
-                  <td>{vehicle.modelId}</td>
+              {brands.map((brand) => (
+                <tr key={brand.id}>
+                  <td>{brand.id}</td>
+                  <td>{brand.name}</td>
+
                   <td>
                     <button className="btn btn-danger btn-sm"> Delete</button>
                   </td>
